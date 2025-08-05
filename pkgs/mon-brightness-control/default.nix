@@ -22,20 +22,12 @@ writeShellApplication
   checkPhase = "";
 
   text = let
-    changePercentage = 3;
+    changePercentage = 5;
   in /* bash */ ''
 
     # Script to control brightness of screen
-    get_max_brightness() {
-      brightnessctl --machine-readable max
-    }
-
-    get_brightness() {
-      brightnessctl --machine-readable get
-    }
-
     get_brightness_percentage() {
-      echo $(($(get_brightness) * 100 / $(get_max_brightness)))
+      brightnessctl --machine-readable --exponent info | cut --fields=4 --delimiter=, | tr --delete '%'
     }
 
     notify_brightness() {
@@ -43,12 +35,12 @@ writeShellApplication
     }
 
     increase_brightness() {
-      brightnessctl --quiet set ${toString changePercentage}%+
+      brightnessctl --quiet --exponent set ${toString changePercentage}%+
       notify_brightness "increased"
     }
 
     decrease_brightness() {
-      brightnessctl --quiet set ${toString changePercentage}%-
+      brightnessctl --quiet set --exponent ${toString changePercentage}%-
       notify_brightness "decreased"
     }
 

@@ -22,22 +22,13 @@ writeShellApplication
   checkPhase = "";
 
   text = let
-    changePercentage = 3;
+    changePercentage = 5;
     device = "*kbd_backlight"; # Find with 'brightnessctl --list'
   in /* bash */ ''
 
     # Script to control brightness of keyboard
-
-    get_max_brightness() {
-      brightnessctl --machine-readable --device='${device}' max
-    }
-
-    get_brightness() {
-      brightnessctl --machine-readable --device='${device}' get
-    }
-
     get_brightness_percentage() {
-      echo $(($(get_brightness) * 100 / $(get_max_brightness)))
+      brightnessctl --machine-readable --exponent --device='${device}' info | cut --fields=4 --delimiter=, | tr --delete '%'
     }
 
     notify_brightness() {
