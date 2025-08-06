@@ -16,6 +16,7 @@
     ./helix
     ./icons
     ./imv
+    ./keepassxc
     ./monitors
     ./starship
     ./tokei

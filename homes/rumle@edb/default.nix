@@ -16,6 +16,7 @@
     mpv.enable = true;        # Video player
     vscode.enable = true;     # GUI text editor
     zathura.enable = true;    # Document viewer
+    keepassxc.enable = true;  # Password manager
   };
 
   fonts.fontconfig.enable = true;
@@ -30,7 +31,8 @@
       signal-desktop     # Message application
       element-desktop    # Matrix client
       tutanota-desktop   # Email client
-      keepassxc          # Password manager
+      inkscape           # Vector graphics editor
+      freecad-wayland    # 3D modeling tool
     ];
 
     stateVersion = "23.11";
