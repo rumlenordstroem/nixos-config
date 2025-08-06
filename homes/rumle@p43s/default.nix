@@ -33,6 +33,8 @@
       keepassxc          # Password manager
       inkscape           # Vector graphics editor
       freecad-wayland    # 3D modeling tool
+      kicad              # PCB design suite
+      digikam            # Photo management tool
     ];
 
     stateVersion = "24.11";
