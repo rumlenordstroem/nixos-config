@@ -20,7 +20,7 @@
   "devtools.chrome.enabled" = true;
   "devtools.debugger.remote-enabled" = true;
   "browser.uiCustomization.state" = builtins.toJSON {
-    currentVersion = 21;
+    currentVersion = 23;
     # Place extensions in the extensions menu
     placements.unified-extensions-area = [
       "sponsorblocker_ajay_app-browser-action"
