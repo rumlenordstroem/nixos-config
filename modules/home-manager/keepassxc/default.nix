@@ -7,15 +7,6 @@ let
 in
 {
   config = mkIf cfg.enable {
-    programs.librewolf = {
-      nativeMessagingHosts = [ pkgs.keepassxc ];
-
-      profiles = {
-        default.extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-          keepassxc-browser
-        ];
-      };
-    };
     programs.keepassxc = {
       settings = {
         General.ConfigVersion = 2;
@@ -31,6 +22,25 @@ in
         PasswordGenerator = {
           Length = 32;
           SpecialChars = true;
+        };
+      };
+    };
+
+    # Browser extension
+    programs.librewolf = {
+      nativeMessagingHosts = [ pkgs.keepassxc ];
+
+      profiles = {
+        default.extensions = {
+          packages = with pkgs.nur.repos.rycee.firefox-addons; [
+            keepassxc-browser
+          ];
+          # See settings https://github.com/keepassxreboot/keepassxc-browser/blob/develop/keepassxc-browser/background/page.js
+          settings."keepassxc-browser@keepassxc.org".settings.settings = {
+              "defaultGroup" = "Accounts";
+              "downloadFaviconAfterSave" = true;
+              "saveDomainOnlyNewCreds" = true;
+          };
         };
       };
     };
