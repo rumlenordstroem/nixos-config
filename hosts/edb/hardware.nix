@@ -2,9 +2,7 @@
 {
   imports = [
     inputs.nixpkgs.nixosModules.notDetected
-
-    # My model is newer but this works. This configures almost everything for an Intel laptop.
-    inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-1
+    inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-4
   ];
 
   hardware.graphics.enable = true;
@@ -24,9 +22,9 @@
   };
 
   # Make accidental presses of the power key a little more forgiving
-  services.logind = {
-    powerKey = "ignore";
-    powerKeyLongPress = "poweroff";
+  services.logind.settings.Login = {
+    HandlePowerKey = "ignore";
+    HandlePowerKeyLongPress = "poweroff";
   };
 
   # Boot and module stuff
