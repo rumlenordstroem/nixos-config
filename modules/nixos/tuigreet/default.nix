@@ -9,7 +9,7 @@ in
   options.tuigreet  = {
     enable = mkEnableOption "Tuigreet display manager";
 
-    package = mkPackageOption pkgs [ "greetd" "tuigreet" ] { example = "pkgs.greetd.tuigreet"; };
+    package = mkPackageOption pkgs [ "tuigreet" ] { example = "pkgs.tuigreet"; };
 
     settings = { 
       args = mkOption {
@@ -38,6 +38,7 @@ in
         command = "${cfg.package}/bin/tuigreet ${concatStringsSep " " cfg.settings.args}";
         user = "greeter";
       };
+        useTextGreeter = true;
     };
 
   # Fixes TTYs overriding. https://github.com/apognu/tuigreet/issues/17#issuecomment-927173694
