@@ -36,8 +36,6 @@ in
 
         # Other
         mkdir = "mkdir -p";
-        rp = { setCursor = true; expansion = "realpath -z % |xargs --null -I -- echo 'wl-copy --' |sh"; };
-        wg = "wl-paste | xargs -I % echo 'wget --no-hsts %' | sh";
       };
 
       functions.fish_greeting = "";
