@@ -15,7 +15,7 @@ in
   config = mkIf cfg.enable {
     programs.fish = {
       enable = true;
-      
+
       shellAbbrs = {
         # Nix abbreviations
         n = "nix";

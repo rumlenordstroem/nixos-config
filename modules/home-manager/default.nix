@@ -25,7 +25,6 @@
     ./swayidle
     ./swaylock
     ./vscode
-    ./wofi
     ./yambar
     ./zathura
   ];
