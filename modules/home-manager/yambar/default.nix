@@ -3,21 +3,29 @@
 with lib;
 
 let
-  cfg = config.programs.yambar;
+  cfg = config.nix-pille.programs.yambar;
 in
 {
+  options.nix-pille.programs.yambar = {
+    enable = mkEnableOption {
+      name = "nix pille yambar configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     # User configuration begins here
     programs.yambar = {
+      enable = true;
+
       systemd.enable = true;
 
       settings = with config.colorScheme.palette; let
         # The scale value is manually used since yambar does not support automatic DPI scaling
         # This function scales an integer by the monitor scaling. Returns result as a string which yambar accepts
-        scaledInt = n: strings.toInt (head (strings.splitString "." (strings.floatToString ((head (filter (m: m.primary) config.monitors)).scale * n))));
+        scaledInt = n: strings.toInt (head (strings.splitString "." (strings.floatToString ((head (filter (m: m.primary) config.nix-pille.monitors)).scale * n))));
 
         # Main monitor where bar will be put
-        monitor = (head (filter (m: m.primary) config.monitors)).name;
+        monitor = (head (filter (m: m.primary) config.nix-pille.monitors)).name;
 
           # Default font (TODO)
         font = "monospace:pixelsize=${toString (scaledInt 14)}";

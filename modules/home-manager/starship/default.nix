@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.programs.starship;
+  cfg = config.nix-pille.programs.starship;
 in
 {
+  options.nix-pille.programs.starship = {
+    enable = mkEnableOption {
+      name = "nix pille starship configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.starship = {
+      enable = true;
+
       settings = {
         add_newline = false;
         format = lib.concatStrings [

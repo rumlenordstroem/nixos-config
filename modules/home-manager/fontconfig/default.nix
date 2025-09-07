@@ -3,11 +3,18 @@
 with lib;
 
 let
-  cfg = config.fonts.fontconfig;
+  cfg = config.nix-pille.fonts;
 in
 {
+  options.nix-pille.fonts = {
+    enable = mkEnableOption {
+      name = "nix pille font configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     fonts.fontconfig = {
+      enable = true;
       defaultFonts = {
         monospace = [ "MesloLGLDZ Nerd Font" ];
         serif = [ "Noto Serif" ];

@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.programs.fzf;
+  cfg = config.nix-pille.programs.fzf;
 in
 {
+  options.nix-pille.programs.fzf = {
+    enable = mkEnableOption {
+      name = "nix pille fzf configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.fzf = {
+      enable = true;
+
       defaultCommand = "${pkgs.fd}/bin/fd --type file --follow";
       defaultOptions = [
         "--height=60%"

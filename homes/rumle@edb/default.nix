@@ -2,25 +2,31 @@
 {
   users.rumle.enable = true;
 
-  wayland.windowManager.sway = {
+  nix-pille.wayland.windowManager.sway = {
     enable = true;
-    config.terminal = "${config.programs.alacritty.package}/bin/alacritty";
     wallpaper = "~/Pictures/wallpapers/the-glow-transparent.png";
+    terminal = "${config.programs.alacritty.package}/bin/alacritty";
+  };
+
+  wayland.windowManager.sway = {
     config.input."type:keyboard".xkb_layout = "us(mac),dk(mac),kr";
   };
 
-  programs = {
+  nix-pille.programs = {
     alacritty.enable = true;  # Terminal emulator
     librewolf.enable = true;  # Web browser
     imv.enable = true;        # Image viewer
-    mpv.enable = true;        # Video player
-    vscode.enable = true;     # GUI text editor
     zathura.enable = true;    # Document viewer
     keepassxc.enable = true;  # Password manager
   };
 
-  fonts.fontconfig.enable = true;
-  gtk.enable = true;
+  programs = {
+    vscode.enable = true;     # Code editor
+    mpv.enable = true;        # Video player
+  };
+
+  nix-pille.fonts.enable = true;
+  nix-pille.gtk.enable = true;
 
   home = {
     # User packages
@@ -41,7 +47,7 @@
   # Enable dconf as many programs read dconf data
   dconf.enable = true;
 
-  monitors = [
+  nix-pille.monitors = [
     { # Built in display
       name = "eDP-1";
       width = 2880;

@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.monitors;
+  cfg = config.nix-pille.monitors;
 in
 {
-  options.monitors = mkOption {
+  options.nix-pille.monitors = mkOption {
     type = types.listOf (types.submodule {
       options = {
         name = mkOption {
@@ -45,10 +45,11 @@ in
     });
     default = [ ];
   };
+
   config = {
     assertions = [{
-      assertion = ((lib.length config.monitors) != 0) ->
-        ((lib.length (lib.filter (m: m.primary) config.monitors)) == 1);
+      assertion = ((lib.length cfg) != 0) ->
+        ((lib.length (lib.filter (m: m.primary) cfg)) == 1);
       message = "Exactly one monitor must be set to primary.";
     }];
   };

@@ -3,18 +3,25 @@
 with lib;
 
 let
-  cfg = config.programs.swaylock;
+  cfg = config.nix-pille.programs.swaylock;
 in
 {
+  options.nix-pille.programs.swaylock = {
+    enable = mkEnableOption {
+      name = "nix pille swaylock configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.swaylock = {
+      enable = true;
       settings = {
         # General
         ignore-empty-password = true;
         show-failed-attempts = true;
         daemonize = true;
         font = head config.fonts.fontconfig.defaultFonts.monospace;
-        image = config.wayland.windowManager.sway.wallpaper; # TODO
+        image = config.nix-pille.wayland.windowManager.sway.wallpaper; # TODO
         color = "${config.colorScheme.palette.base02}"; # Fallback color
 
         # Ring

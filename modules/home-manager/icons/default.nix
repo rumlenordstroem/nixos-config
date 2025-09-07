@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.icons;
+  cfg = config.nix-pille.icons;
 in
 {
-  options.icons = {
+  options.nix-pille.icons = {
     enable = mkEnableOption "Icon theme module";
 
     package = mkPackageOption pkgs "icons" { example = "pkgs.papirus-icon-theme"; };
@@ -28,10 +28,11 @@ in
       '';
     };
   };
+
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];
 
     # Dynamically set the `path` if it's not explicitly configured by the user
-    icons.path = mkDefault "${cfg.package}/share/icons/${cfg.name}";
+    nix-pille.icons.path = mkDefault "${cfg.package}/share/icons/${cfg.name}";
   };
 }

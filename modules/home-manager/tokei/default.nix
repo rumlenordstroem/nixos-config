@@ -3,14 +3,14 @@
 with lib;
 
 let
-  cfg = config.programs.tokei;
+  cfg = config.nix-pille.programs.tokei;
 
   tomlFormat = pkgs.formats.toml { };
 in
 {
   options = {
-    programs.tokei = {
-      enable = mkEnableOption "Tokei";
+    nix-pille.programs.tokei = {
+      enable = mkEnableOption "nix pille tokei configuration";
 
       package = mkOption {
         type = types.package;

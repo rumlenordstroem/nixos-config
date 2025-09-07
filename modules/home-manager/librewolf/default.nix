@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.programs.librewolf;
+  cfg = config.nix-pille.programs.librewolf;
 
   # General settings for Librewolf
   settings = import ./settings.nix { inherit inputs config lib pkgs; };
@@ -15,11 +15,19 @@ let
   userChrome = (import ./chrome.nix { inherit inputs config lib pkgs; }).userChrome;
   userContent = (import ./chrome.nix { inherit inputs config lib pkgs; }).userContent;
 in {
+  options.nix-pille.programs.librewolf = {
+    enable = mkEnableOption {
+      name = "nix pille librewolf configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     # Set as default browser
     home.sessionVariables.BROWSER = "librewolf";
   
     programs.librewolf = {
+      enable = true;
+
       profiles = {
         default = {
           isDefault = true;

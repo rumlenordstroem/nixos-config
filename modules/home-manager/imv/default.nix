@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.programs.imv;
+  cfg = config.nix-pille.programs.imv;
 in
 {
+  options.nix-pille.programs.imv = {
+    enable = mkEnableOption {
+      name = "nix pille imv configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.imv = {
+      enable = true;
+
       settings = {
         options = with config.colorScheme.palette; {
           width = 640;

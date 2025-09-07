@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.programs.zathura;
+  cfg = config.nix-pille.programs.zathura;
 in
 {
+  options.nix-pille.programs.zathura = {
+    enable = mkEnableOption {
+      name = "nix pille zathura configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.zathura = {
+      enable = true;
+
       options = with config.colorScheme.palette; {
         # Settings
         selection-clipboard = "clipboard";

@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.programs.keepassxc;
+  cfg = config.nix-pille.programs.keepassxc;
 in
 {
+  options.nix-pille.programs.keepassxc = {
+    enable = mkEnableOption {
+      name = "nix pille keepassxc configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.keepassxc = {
+      enable = true;
+
       settings = {
         General.ConfigVersion = 2;
         Browser = {

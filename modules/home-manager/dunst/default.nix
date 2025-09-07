@@ -3,15 +3,22 @@
 with lib;
 
 let
-  cfg = config.services.dunst;
+  cfg = config.nix-pille.services.dunst;
 in
 {
+  options.nix-pille.services.dunst = {
+    enable = mkEnableOption {
+      name = "nix pille dunst configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     # For notification binaries
     home.packages = [ pkgs.libnotify ];
 
     # Dunst configuration
     services.dunst = {
+      enable = true;
       settings = {
         global = {
           follow = "mouse";
@@ -35,7 +42,7 @@ in
           font = "monospace 9"; # TODO
           markup = "full";
           enable_recursive_icon_lookup = true;
-          icon_theme = config.icons.name;
+          icon_theme = config.nix-pille.icons.name;
           icon_path = lib.mkForce "";
           browser = "${pkgs.xdg-utils}/bin/xdg-open";
           corner_radius = 0;

@@ -11,7 +11,7 @@ in
 
   config = mkIf cfg.enable {
     # Enable commonly used CLI tools
-    cli.enable = true;
+    nix-pille.cli.enable = true;
 
     home = {
       username = "nixos";

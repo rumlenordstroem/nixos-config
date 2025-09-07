@@ -3,9 +3,15 @@
 with lib;
 
 let
-  cfg = config.services.swayidle;
+  cfg = config.nix-pille.services.swayidle;
 in
 {
+  options.nix-pille.services.swayidle = {
+    enable = mkEnableOption {
+      name = "nix pille swayidle configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     services.swayidle = let 
       inactiveTime = 900; # Seconds idle before going to sleep
@@ -16,6 +22,7 @@ in
       powerOff = "${outputPower} off && ${pkgs.brightnessctl}/bin/brightnessctl --quiet --device='*kbd_backlight' --save set 0";
       powerOn = "${outputPower} on && ${pkgs.brightnessctl}/bin/brightnessctl --quiet --device='*kbd_backlight' --restore";
     in {
+      enable = true;
 
       timeouts = [
         # For when the inactive time has already been reached and display is locked. It should then quickly power off display if user remains inactive

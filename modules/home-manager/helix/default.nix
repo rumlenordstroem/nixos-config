@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.programs.helix;
+  cfg = config.nix-pille.programs.helix;
 in
 {
+  options.nix-pille.programs.helix = {
+    enable = mkEnableOption {
+      name = "nix pille helix configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.helix = {
+      enable = true;
+
       defaultEditor = true;
       settings = {
         editor = {

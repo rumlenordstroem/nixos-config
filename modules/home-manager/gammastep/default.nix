@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.services.gammastep;
+  cfg = config.nix-pille.services.gammastep;
 in
 {
+  options.nix-pille.services.gammastep = {
+    enable = mkEnableOption {
+      name = "nix pille gammastep configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     services.gammastep = {
+      enable = true;
+
       provider = "manual";
       temperature = {
         day = 6500;

@@ -3,11 +3,19 @@
 with lib;
 
 let
-  cfg = config.programs.fish;
+  cfg = config.nix-pille.programs.fish;
 in
 {
+  options.nix-pille.programs.fish = {
+    enable = mkEnableOption {
+      name = "nix pille fish configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.fish = {
+      enable = true;
+      
       shellAbbrs = {
         # Nix abbreviations
         n = "nix";

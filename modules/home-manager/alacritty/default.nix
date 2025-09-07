@@ -3,14 +3,22 @@
 with lib;
 
 let
-  cfg = config.programs.alacritty;
+  cfg = config.nix-pille.programs.alacritty;
 in
 {
+  options.nix-pille.programs.alacritty = {
+    enable = mkEnableOption {
+      name = "nix pille alacritty configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     # Set as default terminal
     home.sessionVariables.TERM = "alacritty";
 
     programs.alacritty = {
+      enable = true;
+
       settings = {
         cursor = {
           blink_interval = 600;

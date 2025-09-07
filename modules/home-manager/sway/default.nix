@@ -3,26 +3,43 @@
 with lib;
 
 let
-  cfg = config.wayland.windowManager.sway;
+  cfg = config.nix-pille.wayland.windowManager.sway;
 in
 {
-  # This option cannot be defined under sway.config
-  # due to how the sway module is implemented.
-  # TODO: define a generic wallpaper module or
-  # use something like stylix in the future
-  options.wayland.windowManager.sway.wallpaper = mkOption {
-    type = types.str;
-    default = toString pkgs.nixos-artwork.wallpapers.simple-light-gray.gnomeFilePath;
-    description = "Wallpaper for Sway compositor";
+  options.nix-pille.wayland.windowManager.sway = {
+    enable = mkEnableOption {
+      name = "nix pille sway configuration";
+    };
+    # This option cannot be defined under sway.config
+    # due to how the sway module is implemented.
+    # TODO: define a generic wallpaper module or
+    # use something like stylix in the future
+    wallpaper = mkOption {
+        type = types.str;
+        default = toString pkgs.nixos-artwork.wallpapers.simple-light-gray.gnomeFilePath;
+        description = "Wallpaper for Sway compositor";
+    };
+
+    terminal = mkOption {
+        type = types.str;
+        default = "${pkgs.alacritty}/bin/alacritty";
+        description = "Terminal for Sway compositor";
+    };
   };
 
   config = mkIf cfg.enable {
-    programs.fuzzel.enable = true;        # Menu
-    services.dunst.enable = true;         # Notification daemon (systemd service)
-    services.gammastep.enable = true;     # Color temperature adjuster (systemd service)
-    programs.swaylock.enable = true;      # Screen locker (systemd service)
-    services.swayidle.enable = true;      # Inactivity manager (systemd service)
-    programs.yambar.enable = true;        # Status bar (systemd service)
+    nix-pille.programs = {
+      fuzzel.enable = true;        # Menu
+      swaylock.enable = true;      # Screen locker (systemd service)
+      yambar.enable = true;        # Status bar (systemd service)
+    };
+
+    nix-pille.services = {
+      dunst.enable = true;         # Notification daemon (systemd service)
+      gammastep.enable = true;     # Color temperature adjuster (systemd service)
+      swayidle.enable = true;      # Inactivity manager (systemd service)
+    };
+
     services.playerctld.enable = true;    # Playerctl for controlling media
 
     home.packages = with pkgs; [
@@ -42,7 +59,7 @@ in
     };
 
     # System icon theme
-    icons = {
+    nix-pille.icons = {
       enable = true;
       package = pkgs.papirus-icon-theme.overrideAttrs (oldAttrs: {
         patchPhase = /* sh */ ''
@@ -84,6 +101,8 @@ in
       right = "l";
 
     in {
+      enable = true;
+
       xwayland = false;
       checkConfig = false;
       config = {
@@ -117,7 +136,7 @@ in
             scale = toString monitor.scale;
             pos = "${toString monitor.x} ${toString monitor.y}";
           };
-        }) (config.monitors)) // { "*".background = "${cfg.wallpaper} fill '#${fallback}'"; };
+        }) (config.nix-pille.monitors)) // { "*".background = "${cfg.wallpaper} fill '#${fallback}'"; };
 
         startup = [ ];
 
@@ -139,7 +158,7 @@ in
 
         keybindings = {
           # Essentials
-          "${modifier}+Return" = "exec ${cfg.config.terminal}";
+          "${modifier}+Return" = "exec ${cfg.terminal}";
           "${modifier}+q" = "kill";
           "${modifier}+d" = "exec ${menu}";
           "${modifier}+Shift+d" = "exec ${finder}";

@@ -3,11 +3,18 @@
 with lib;
 
 let
-  cfg = config.programs.fuzzel;
+  cfg = config.nix-pille.programs.fuzzel;
 in
 {
+  options.nix-pille.programs.fuzzel = {
+    enable = mkEnableOption {
+      name = "nix pille fuzzel configuration";
+    };
+  };
+
   config = mkIf cfg.enable {
     programs.fuzzel = {
+      enable = true;
 
       settings = let
         boolToYN = b: if b then "yes" else "no";
@@ -15,7 +22,7 @@ in
         main = {
           font = "monospace:pixelsize=42";
           dpi-aware = boolToYN true;
-          icon-theme = config.icons.name;
+          icon-theme = config.nix-pille.icons.name;
           icons-enabled = boolToYN true;
           show-actions = boolToYN false;
           terminal = config.home.sessionVariables.TERM;
