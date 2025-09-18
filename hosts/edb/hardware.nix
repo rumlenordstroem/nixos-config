@@ -5,14 +5,18 @@
     inputs.nixos-hardware.nixosModules.apple-macbook-pro-11-4
   ];
 
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      pocl
+    ];
+  };
 
   # Force i965 VA-API driver
   environment.sessionVariables = { LIBVA_DRIVER_NAME = "i965"; };
 
   # CPU frequency scaling
   services.thermald.enable = true;
-
 
   # Faster wakeups from suspend
   systemd.sleep.extraConfig = ''
