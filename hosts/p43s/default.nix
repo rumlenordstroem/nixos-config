@@ -20,9 +20,6 @@
 
   # Time zone and locale.
   services.automatic-timezoned.enable = true;
-  # TODO: remove when this is merged: https://github.com/NixOS/nixpkgs/pull/391845
-  services.geoclue2.geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
-  services.geoclue2.submissionUrl = "https://api.beacondb.net/v2/geosubmit";
   i18n.enable = true;
 
   # User
