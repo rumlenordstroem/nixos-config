@@ -36,12 +36,12 @@ writeShellApplication
     }
 
     increase_brightness() {
-      brightnessctl --quiet --device='${device}' set ${toString changePercentage}%+
+      brightnessctl --quiet --exponent --device='${device}' set ${toString changePercentage}%+
       notify_brightness "increased"
     }
 
     decrease_brightness() {
-      brightnessctl --quiet --device='${device}' set ${toString changePercentage}%-
+      brightnessctl --quiet --exponent --device='${device}' set ${toString changePercentage}%-
       notify_brightness "decreased"
     }
 
