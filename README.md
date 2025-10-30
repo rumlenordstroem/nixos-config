@@ -38,3 +38,8 @@ nix build
 ```
 
 This builds the ISO image with a NixOS installer. You can flash it to a USB drive and boot a live environment of this setup.
+
+## TODO
+  - [ ] Font module for home-manager
+  - [ ] Make swaylock follow nix-colors
+  - [ ] Disko setup with full disk encryption
