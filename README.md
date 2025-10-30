@@ -2,18 +2,23 @@
 Here is my NixOS and Home Manager configurations.
 The configurations are provided as a flake and should currently be considered work in progress.
 
+You can see what outputs this flake produces by running:
+```shell
+nix flake show
+```
+
 ## Building NixOS
 To build the NixOS configuration located in ```hosts/``` run the following command:
 
 ```shell
-sudo nixos-rebuild --flake . switch
+sudo nixos-rebuild --flake .#edb switch
 ```
 
 ## Building home
 To build the home manager configuration located in ```homes/``` run the following command:
 
 ```shell
-home-manager --flake . switch
+home-manager --flake .#rumle@edb switch
 ```
 
 ## Testing the config
