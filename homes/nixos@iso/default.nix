@@ -2,28 +2,31 @@
 {
   users.nixos.enable = true;
 
-  wayland.windowManager.sway = {
+  nix-pille.wayland.windowManager.sway = {
     enable = true;
-    config.terminal = "${config.programs.alacritty.package}/bin/alacritty";
+    terminal = "${config.programs.alacritty.package}/bin/alacritty";
   };
 
-  programs = {
+  nix-pille.programs = {
     alacritty.enable = true;  # Terminal emulator
     librewolf.enable = true;  # Web browser
     imv.enable = true;        # Image viewer
-    mpv.enable = true;        # Video player
     zathura.enable = true;    # Document viewer
   };
 
-  fonts.fontconfig.enable = true;
-  gtk.enable = true;
+  programs = {
+    mpv.enable = true;        # Video player
+  };
+
+  nix-pille.fonts.enable = true;
+  nix-pille.gtk.enable = true;
 
   home.stateVersion = "24.11";
 
   # Enable dconf as many programs read dconf data
   dconf.enable = true;
 
-  monitors = [
+  nix-pille.monitors = [
     { # Built in display
       name = "*";
       width = 1920;
