@@ -49,6 +49,34 @@
   # Enable dconf as many programs read dconf data
   dconf.enable = true;
 
+  services.syncthing = {
+    enable = true;
+    settings = {
+      folders = {
+        dcim = {
+          id = "dcim";
+          path = "~/DCIM";
+          devices = [ "pixel" ];
+        };
+        pictures = {
+          id = "pictures";
+          path = "~/Pictures";
+          devices = [ "pixel" ];
+        };
+        public = {
+          id = "public";
+          path = "~/Public";
+          devices = [ "pixel" ];
+        };
+        music = {
+          id = "music";
+          path = "~/Music";
+          devices = [ "pixel" ];
+        };
+      };
+    };
+  };
+
   nix-pille.monitors = [
     { # Built in display
       name = "eDP-1";
