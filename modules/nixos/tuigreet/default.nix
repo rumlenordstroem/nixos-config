@@ -20,7 +20,7 @@ in
           "--time"
           "--time-format '%Y-%m-%d %H:%M'"
           "--asterisks"
-          "--cmd sway"
+          "--cmd niri-session"
         ];
         description = ''
           Arguments to pass to the tuigreet binary.
