@@ -16,6 +16,7 @@
     nix-colors.url = "github:misterio77/nix-colors";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   outputs = {
@@ -40,6 +41,7 @@
         overlays.additions
         overlays.modifications
         inputs.nur.overlays.default
+        inputs.niri.overlays.niri
       ];
       config.allowUnfree = true;
     });
@@ -66,6 +68,7 @@
           homeManagerModules
           (./. + "/homes/${user}@${host}")
           ./shared/${host}
+          inputs.niri.homeModules.niri
         ] ++ extraModules;
       };
   in {

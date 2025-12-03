@@ -13,6 +13,7 @@
   };
 
   nix-pille.programs = {
+    niri.enable = true;       # Window manager
     alacritty.enable = true;  # Terminal emulator
     librewolf.enable = true;  # Web browser
     imv.enable = true;        # Image viewer

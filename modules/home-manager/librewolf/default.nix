@@ -42,12 +42,10 @@ in {
           # Extentions must be manually enabled on first launch
           extensions.force = true;
           extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-            darkreader
             ublock-origin
             sponsorblock
             h264ify
             danish-dictionary
-            danish-language-pack
           ];
         };
       };

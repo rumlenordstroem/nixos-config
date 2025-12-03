@@ -18,6 +18,7 @@
     ./imv
     ./keepassxc
     ./monitors
+    ./niri
     ./starship
     ./tokei
     ./users
