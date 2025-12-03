@@ -17,6 +17,7 @@ in
       fuzzel.enable = true;        # Menu
       swaylock.enable = true;      # Screen locker (systemd service)
       yambar.enable = true;        # Status bar (systemd service)
+      quickshell.enable = true;    # Widget toolkit
     };
 
     nix-pille.services = {

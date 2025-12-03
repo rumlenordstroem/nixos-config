@@ -19,6 +19,7 @@
     ./keepassxc
     ./monitors
     ./niri
+    ./quickshell
     ./starship
     ./tokei
     ./users
