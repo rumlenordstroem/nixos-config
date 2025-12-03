@@ -40,6 +40,7 @@
       tutanota-desktop   # Email client
       inkscape           # Vector graphics editor
       freecad-wayland    # 3D modeling tool
+      kicad              # Electronics design tool
     ];
 
     stateVersion = "23.11";
