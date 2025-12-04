@@ -14,60 +14,52 @@ in
 
   config = mkIf cfg.enable {
     services.swayidle = let 
-      inactiveTime = 900; # Seconds idle before going to sleep
-      swaylock = "${config.programs.swaylock.package}/bin/swaylock";
-      execWhenLocked = command: "if ${pkgs.procps}/bin/pgrep --exact --full ${swaylock}; then ${command}; fi";
-      swaymsg = "${config.wayland.windowManager.sway.package}/bin/swaymsg";
-      outputPower = "${swaymsg} output \"*\" power";
-      powerOff = "${outputPower} off && ${pkgs.brightnessctl}/bin/brightnessctl --quiet --device='*kbd_backlight' --save set 0";
-      powerOn = "${outputPower} on && ${pkgs.brightnessctl}/bin/brightnessctl --quiet --device='*kbd_backlight' --restore";
+      # Timing
+      seconds = 1;
+      minutes = 60 * seconds;
+      timeBeforeLock = 5 * minutes; # Time idle before locking
+      timeBeforeSuspend = 10 * minutes;
+
+      # Programs
+      swaylock = "${config.programs.swaylock.package}/bin/swaylock --image $(${config.services.swww.package}/bin/swww query | ${pkgs.coreutils}/bin/cut --delimiter ' ' --fields 9)";
+      loginctl = "${pkgs.systemd}/bin/loginctl";
+      lock = "${loginctl} lock-session";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      suspend = "${systemctl} suspend";
+      kbdBacklight = "${pkgs.brightnessctl}/bin/brightnessctl --quiet --device='*kbd_backlight'";
+
+      # Functions
       display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
+      lockDependentCommand = { locked, command }: "if [ $(${loginctl} show-session $XDG_SESSION_ID -P LockedHint) = ${locked} ]; then ${command}; fi;";
     in {
       enable = true;
 
       timeouts = [
-        # # For when the inactive time has already been reached and display is locked. It should then quickly power off display if user remains inactive
-        # { timeout = 10; command = execWhenLocked powerOff; resumeCommand = execWhenLocked powerOn; }
-
-        # # Timeout for locking windown manager
-        # { timeout = inactiveTime; command = swaylock; }
-
-        # # Timeout for powering off displays
-        # { timeout = inactiveTime + 10; command = powerOff; resumeCommand = powerOn; }
-
         {
-          timeout = inactiveTime - 15;
+          timeout = 15 * seconds;
+          command = lockDependentCommand { locked = "yes"; command = display "off"; };
+        }
+        {
+          timeout = timeBeforeLock - (15 * seconds);
           command = display "off";
           resumeCommand = display "on";
         }
         {
-          timeout = inactiveTime;
-          command = swaylock;
+          timeout = timeBeforeLock;
+          command = lockDependentCommand { locked = "no"; command = lock; };
         }
         {
-          timeout = inactiveTime + 15;
-          command = "${pkgs.systemd}/bin/systemctl suspend";
+          timeout = timeBeforeSuspend;
+          command = suspend;
         }
       ];
-      events = [
-        {
-          event = "before-sleep";
-          # adding duplicated entries for the same event may not work
-          command = (display "off") + "; " + swaylock;
-        }
-        {
-          event = "after-resume";
-          command = display "on";
-        }
-        {
-          event = "lock";
-          command = (display "off") + "; " + swaylock;
-        }
-        {
-          event = "unlock";
-          command = display "on";
-        }
-      ];
+
+      events = {
+          "before-sleep" = "${lock}; ${display "off"}; ${kbdBacklight} --save set 0";
+          "after-resume" = "${display "on"}; ${kbdBacklight} --restore";
+          "lock" = swaylock;
+          "unlock" = display "on";
+      };
     };
 
     # Fix

@@ -76,8 +76,7 @@ in
 
     let
       # Essentials
-      swaymsg = "${config.wayland.windowManager.sway.package}/bin/swaymsg";
-      swaylock = "${config.programs.swaylock.package}/bin/swaylock";
+      lock = "${pkgs.systemd}/bin/loginctl lock-session";
       swww = "${config.services.swww.package}/bin/swww";
       cut = "${pkgs.coreutils}/bin/cut";
       terminal = "${config.programs.alacritty.package}/bin/alacritty";
@@ -88,8 +87,6 @@ in
       kbd-brightness-control = "${pkgs.kbd-brightness-control}/bin/kbd-brightness-control";
       audio-volume-control = "${pkgs.audio-volume-control}/bin/audio-volume-control";
       mon-brightness-control = "${pkgs.mon-brightness-control}/bin/mon-brightness-control";
-
-      fallback = "${config.colorScheme.palette.base02}"; # Fallback color for wallpaper
 
       scrollCoolDown = 200;
 
@@ -296,7 +293,7 @@ in
         "Mod+Shift+D".action.spawn-sh = finder;
         "Mod+Shift+Slash".action = show-hotkey-overlay;
         "Mod+Shift+E".action = quit;
-        "Mod+X".action.spawn-sh = "${swaylock} --image $(${swww} query | ${cut} --delimiter ' ' --fields 9)";
+        "Mod+X".action.spawn-sh = lock;
 
         # Focusing windows
         "Mod+Left".action = focus-column-left;
