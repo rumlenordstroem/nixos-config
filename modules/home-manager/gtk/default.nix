@@ -32,12 +32,6 @@ in
 
       gtk3 = {
         extraConfig.gtk-application-prefer-dark-theme = if config.colorScheme.variant == "dark" then "true" else "false";
-        extraCss = /*css*/ ''
-          * {
-            border-radius: 0px; /* No round round corners allowed */
-            box-shadow: none;
-          }
-        '';
       };
       gtk4.extraConfig = gtk3.extraConfig;
     };
