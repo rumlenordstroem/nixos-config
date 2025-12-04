@@ -44,7 +44,8 @@ in
 
         border = {
           width = 2;
-          radius = 0;
+          radius = 8;
+          selection-radius = 8;
         };
       };
     };
