@@ -20,7 +20,8 @@ in
         # Settings
         selection-clipboard = "clipboard";
         recolor = true;
-        page-padding = 5;
+        page-v-padding = 5;
+        page-h-padding = 5;
         statusbar-v-padding = 4;
         statusbar-h-padding = 20;
         statusbar-basename = true;
