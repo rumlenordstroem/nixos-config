@@ -81,6 +81,7 @@
     "ui.text.focus" = { fg = "#${base05}"; bg = "#${base02}"; modifiers = ["bold"]; };
     "ui.virtual.indent-guide" = { fg = "#${base02}"; };
     "ui.virtual.inlay-hint" = { fg = "#${base03}"; bg = "#${base01}"; };
+    "ui.virtual.jump-label" = { fg = "#${base09}"; modifiers = ["bold"]; };
     "ui.virtual.ruler" = { bg = "#${base01}"; };
     "ui.window" = { bg = "#${base04}"; };
   };
