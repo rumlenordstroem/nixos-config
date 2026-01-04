@@ -238,7 +238,6 @@ in
             }
 
             vec4 open_color(vec3 coords_geo, vec3 size_geo) {
-                // Du kan ændre den her til crt_power_on hvis du vil prøve den anden
                 return glitch_slide(coords_geo, size_geo);
             }
              '';
