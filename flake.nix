@@ -106,6 +106,7 @@
                 homeManagerModules
                 (./. + "/homes/nixos@iso")
                 ./shared/iso
+                inputs.niri.homeModules.niri
               ];
             };
           }
