@@ -11,6 +11,8 @@
 
     # Others
     nixos-hardware.url = "github:nixos/nixos-hardware";
+    disko.url = "github:nix-community/disko/latest";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
     nix-colors.url = "github:misterio77/nix-colors";
@@ -58,6 +60,7 @@
         (./. + "/hosts/${host}")
         (./. + "/shared/${host}")
         inputs.nix-index-database.nixosModules.nix-index
+        inputs.disko.nixosModules.disko
       ] ++ extraModules;
     };
 
@@ -92,6 +95,7 @@
     nixosConfigurations = {
       "edb" = mkNixosConfiguration { host = "edb"; system = "x86_64-linux"; };
       "p43s" = mkNixosConfiguration { host = "p43s"; system = "x86_64-linux"; };
+      "graaboellet" = mkNixosConfiguration { host = "graaboellet"; system = "x86_64-linux"; };
       "iso" = mkNixosConfiguration {
         host = "iso";
         system = "x86_64-linux";
@@ -117,6 +121,7 @@
     homeConfigurations = {
       "rumle@edb" = mkHomeManagerConfiguration { user = "rumle"; host = "edb"; system = "x86_64-linux"; };
       "rumle@p43s" = mkHomeManagerConfiguration { user = "rumle"; host = "p43s"; system = "x86_64-linux"; };
+      "rumle@graaboellet" = mkHomeManagerConfiguration { user = "rumle"; host = "graaboellet"; system = "x86_64-linux"; };
     };
   };
 }
