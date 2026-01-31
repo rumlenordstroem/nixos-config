@@ -18,7 +18,6 @@ in
         "video"
         "dialout"
         (mkIf config.networking.networkmanager.enable "networkmanager")
-        (mkIf config.programs.adb.enable "adbusers")
         (mkIf config.virtualisation.libvirtd.enable "libvirtd")
         (mkIf config.virtualisation.virtualbox.host.enable "vboxusers")
       ];

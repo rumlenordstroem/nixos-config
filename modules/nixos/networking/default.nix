@@ -60,6 +60,6 @@ in
 
     # DNS
     networking.nameservers = [ "194.242.2.4#base.dns.mullvad.net" ];
-    services.resolved.dnsovertls = "true";
+    services.resolved.settings.Resolve.DNSOverTLS = "true";
   };
 }
