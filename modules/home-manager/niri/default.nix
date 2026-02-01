@@ -205,82 +205,68 @@ in
 
         window-open = {
           kind.easing = {
-            duration-ms = 500;
+            duration-ms = 250;
             curve = "ease-out-quad";
           };
           custom-shader = /* glsl */ ''
-            float random(vec2 st) {
-                return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-            }
-
-            vec4 glitch_slide(vec3 coords_geo, vec3 size_geo) {
+            vec4 crt_power_on(vec3 coords_geo, vec3 size_geo) {
                 float p = niri_clamped_progress;
-                float intensity = (1.0 - p);
-                float noise = random(vec2(0.0, coords_geo.y * 50.0 + p));
-                float shift = (noise - 0.5) * 0.1 * intensity;
 
-                vec2 r_offset = vec2(shift + 0.02 * intensity, 0.0);
-                vec2 g_offset = vec2(shift, 0.0);
-                vec2 b_offset = vec2(shift - 0.02 * intensity, 0.0);
+                float scale_x = min(1.0, p * 1.5);
+                float scale_y = mix(0.005, 1.0, pow(p, 3.0));
 
-                vec3 r_geo = vec3(coords_geo.xy + r_offset, 1.0);
-                vec3 g_geo = vec3(coords_geo.xy + g_offset, 1.0);
-                vec3 b_geo = vec3(coords_geo.xy + b_offset, 1.0);
+                vec2 coords = coords_geo.xy - 0.5;
+                coords.x /= scale_x;
+                coords.y /= scale_y;
+                coords += 0.5;
 
-                float r = texture2D(niri_tex, (niri_geo_to_tex * r_geo).st).r;
-                float g = texture2D(niri_tex, (niri_geo_to_tex * g_geo).st).g;
-                float b = texture2D(niri_tex, (niri_geo_to_tex * b_geo).st).b;
-                float a = texture2D(niri_tex, (niri_geo_to_tex * g_geo).st).a;
+                if (coords.x < 0.0 || coords.x > 1.0 || coords.y < 0.0 || coords.y > 1.0) {
+                    return vec4(0.0);
+                }
 
-                if (coords_geo.y > p * 1.2) a = 0.0;
+                vec3 coords_tex = niri_geo_to_tex * vec3(coords, 1.0);
+                vec4 color = texture2D(niri_tex, coords_tex.st);
 
-                return vec4(r, g, b, a * p); 
+                return color;
             }
 
             vec4 open_color(vec3 coords_geo, vec3 size_geo) {
-                return glitch_slide(coords_geo, size_geo);
+                return crt_power_on(coords_geo, size_geo);
             }
-             '';
+          '';
         };
 
         window-close = {
           kind.easing = {
-            duration-ms = 500;
+            duration-ms = 250;
             curve = "ease-out-cubic";
           };
           custom-shader = /* glsl */ ''
-            float random(vec2 st) {
-                return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-            }
-
-            vec4 glitch_slide(vec3 coords_geo, vec3 size_geo) {
+            vec4 crt_power_off(vec3 coords_geo, vec3 size_geo) {
                 float p = niri_clamped_progress;
-                float intensity = (1.0 - p);
-                float noise = random(vec2(0.0, coords_geo.y * 50.0 + p));
-                float shift = (noise - 0.5) * 0.1 * intensity;
 
-                vec2 r_offset = vec2(shift + 0.02 * intensity, 0.0);
-                vec2 g_offset = vec2(shift, 0.0);
-                vec2 b_offset = vec2(shift - 0.02 * intensity, 0.0);
+                float scale_x = mix(1.0, 0.0, pow(p, 3.0));
+                float scale_y = mix(1.0, 0.005, min(1.0, p * 1.5));
 
-                vec3 r_geo = vec3(coords_geo.xy + r_offset, 1.0);
-                vec3 g_geo = vec3(coords_geo.xy + g_offset, 1.0);
-                vec3 b_geo = vec3(coords_geo.xy + b_offset, 1.0);
+                vec2 coords = coords_geo.xy - 0.5;
+                coords.x /= scale_x;
+                coords.y /= scale_y;
+                coords += 0.5;
 
-                float r = texture2D(niri_tex, (niri_geo_to_tex * r_geo).st).r;
-                float g = texture2D(niri_tex, (niri_geo_to_tex * g_geo).st).g;
-                float b = texture2D(niri_tex, (niri_geo_to_tex * b_geo).st).b;
-                float a = texture2D(niri_tex, (niri_geo_to_tex * g_geo).st).a;
+                if (coords.x < 0.0 || coords.x > 1.0 || coords.y < 0.0 || coords.y > 1.0) {
+                    return vec4(0.0);
+                }
 
-                if (coords_geo.y > p * 1.2) a = 0.0;
+                vec3 coords_tex = niri_geo_to_tex * vec3(coords, 1.0);
+                vec4 color = texture2D(niri_tex, coords_tex.st);
 
-                return vec4(r, g, b, a * intensity); 
+                return color;
             }
 
             vec4 close_color(vec3 coords_geo, vec3 size_geo) {
-                return glitch_slide(coords_geo, size_geo);
+                return crt_power_off(coords_geo, size_geo);
             }
-             '';
+          '';
         };
       };
 
