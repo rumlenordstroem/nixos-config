@@ -18,6 +18,14 @@ in
       homeDirectory = "/home/${config.home.username}";
     };
 
+    # Git profile
+    programs.git.iniContent = {
+      user = {
+        name = "Rumle Nordstrøm";
+        email = "madsrumlenordstrom@icloud.com";
+      };
+    };
+
     # Enable XDG base directories management
     xdg.enable = true;
     nix = {

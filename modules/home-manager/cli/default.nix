@@ -23,6 +23,7 @@ in
     };
 
     programs = {
+      jq.enable = true;         # JSON cli processor
       fd.enable = true;         # Modern find
       htop.enable = true;       # System monitor
       ripgrep.enable = true;    # Modern grep
