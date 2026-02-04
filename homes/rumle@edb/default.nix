@@ -2,16 +2,6 @@
 {
   users.rumle.enable = true;
 
-  nix-pille.wayland.windowManager.sway = {
-    enable = true;
-    wallpaper = "~/Pictures/wallpapers/the-glow-transparent.png";
-    terminal = "${config.programs.alacritty.package}/bin/alacritty";
-  };
-
-  wayland.windowManager.sway = {
-    config.input."type:keyboard".xkb_layout = "us(mac),dk(mac),kr";
-  };
-
   nix-pille.programs = {
     niri.enable = true;       # Window manager
     alacritty.enable = true;  # Terminal emulator
