@@ -25,9 +25,9 @@ in
         nsh = { setCursor = true; expansion = "nix shell nixpkgs#%"; };
         nr = { setCursor = true; expansion = "nix run nixpkgs#%"; };
         np = { setCursor = true; expansion = "nix path-info nixpkgs#%"; };
-        snrs = "nixos-rebuild --sudo --flake . switch";
-        snrb = "nixos-rebuild --sudo --flake . boot";
-        hms = "home-manager --flake . switch";
+        snrs = "nh os switch .";
+        snrb = "nh os boot .";
+        hms = "nh home switch .";
 
         # Git abbreviations
         ga = "git add";
