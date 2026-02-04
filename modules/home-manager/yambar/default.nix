@@ -42,31 +42,23 @@ in
 
           border = {
             color = "${base04}ff";
-            margin = mkDefault (scaledInt 6);
+            margin = mkDefault (scaledInt 0);
             bottom-margin = mkDefault (scaledInt 0);
-            width = scaledInt 2;
+            width = scaledInt 0;
           };
 
           left = [
-            {
-              # i3 modules can be used for sway
-              i3 = {
-                persistent = [ 1 2 3 4 5 ];
-                spacing = config.programs.yambar.settings.bar.spacing;
-
-                content."".map.conditions = let
-                  mkSwayString = s: {
-                    text = s;
-                    on-click = "${config.wayland.windowManager.sway.package}/bin/swaymsg --quiet workspace {name}";
-                  };
-                in {
-                  "state == focused" = { string = mkSwayString "󱓻 "; };
-                  "state == invisible" = { string = mkSwayString "󱓼 "; };
-                  "state == unfocused" = { string = mkSwayString "󱓼 "; };
-                  "state == urgent" = { string = mkSwayString "󱓼 "; };
-                };
-              };
-            }
+            # {
+            #   niri-workspaces = {
+            #     content.map = {
+            #       default.text = "| {id}";
+            #       conditions = {
+            #         "active" = { string.text = "-> {id}"; };
+            #         "~empty" = { string.text = "@ {id}"; };
+            #       };
+            #     };
+            #   };
+            # }
           ];
 
           right = [
