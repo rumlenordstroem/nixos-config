@@ -5,6 +5,9 @@
     ./hardware.nix
   ];
 
+  # Enable nix helper
+  programs.nh.enable = true;
+
   # Add flakes to nix registry (used in legacy commands)
   nix.registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs);
 

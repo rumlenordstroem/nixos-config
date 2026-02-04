@@ -19,6 +19,7 @@ in
         "dialout"
         (mkIf config.networking.networkmanager.enable "networkmanager")
         (mkIf config.virtualisation.libvirtd.enable "libvirtd")
+        (mkIf config.virtualisation.docker.enable "docker")
         (mkIf config.virtualisation.virtualbox.host.enable "vboxusers")
       ];
       hashedPassword = "$y$j9T$.uZNPXk3OFWaoNetj2P2e0$6rD7ex86u17L78b0wKQ.QzXd3cZUVkAPifTs7r.L3l5";

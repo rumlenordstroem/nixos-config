@@ -4,6 +4,7 @@
     ./console
     ./i18n
     ./networking
+    ./nh
     ./nix
     ./pipewire
     ./tuigreet
