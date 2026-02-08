@@ -10,11 +10,8 @@ in
 
   config = mkIf cfg.enable (mkMerge [
       # Use this module from nixpkgs
-      (import "${inputs.nixpkgs}/nixos/modules/programs/wayland/wayland-session.nix" { inherit lib pkgs; })
+      (import "${inputs.nixpkgs}/nixos/modules/programs/wayland/wayland-session.nix" { inherit lib pkgs; enableXWayland = false; })
     {
-      # Disable xwayland
-      programs.xwayland.enable = false;
-
       # Allow users group to request realtime priority
       security.pam.loginLimits = [{ domain = "@users"; item = "rtprio"; type = "-"; value = 1; }];
 
