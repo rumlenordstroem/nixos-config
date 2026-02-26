@@ -17,6 +17,7 @@
   # Networking settings settings
   networking.enable = true;
   networking.hostName = "p43s";
+  wait-online.enable = false;
 
   # SSH
   services.openssh.enable = true;

@@ -11,7 +11,6 @@ in
   config = mkIf cfg.enable {
     systemd.network = {
       enable = true;
-      wait-online.enable = false;
       networks = {
         "20-wired" = {
           matchConfig.Name = "enp*";
