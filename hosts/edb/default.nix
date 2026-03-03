@@ -17,7 +17,7 @@
   # Networking settings
   networking.enable = true;
   networking.hostName = "edb";
-  wait-online.enable = false;
+  systemd.network.wait-online.enable = false;
 
   # SSH
   services.openssh.enable = true;
