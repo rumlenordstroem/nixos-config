@@ -4,8 +4,6 @@ with lib;
 
 let
   cfg = config.nix-pille.gtk;
-
-  inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) gtkThemeFromScheme;
 in
 {
   options.nix-pille.gtk = {
@@ -15,17 +13,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    stylix.targets.gtk.enable = true;
+    stylix.targets.gtk.fonts.enable = false;
+
     gtk = rec {
       enable = true;
 
       font = {
         name = head config.fonts.fontconfig.defaultFonts.sansSerif;
         size = 12;
-      };
-
-      theme = {
-        name = "${config.colorScheme.slug}";
-        package = gtkThemeFromScheme { scheme = config.colorScheme; };
       };
 
       iconTheme = { inherit (config.nix-pille.icons) name package; };

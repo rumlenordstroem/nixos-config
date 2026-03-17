@@ -1,7 +1,7 @@
 { inputs, config, lib, pkgs, ... }:
 {
   # See https://docs.helix-editor.com/themes.html
-  base16 = with config.colorScheme.palette; {
+  base16 = with config.lib.stylix.colors; {
     # Syntax highlighting
     "attributes" = "#${base0D}";
     "comment" = { fg = "#${base03}"; modifiers = ["italic"]; };

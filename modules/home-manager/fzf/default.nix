@@ -39,7 +39,7 @@ in
         "--preview '${config.programs.eza.package}/bin/eza --tree --color=always --icons=always {}'"
       ];
 
-      colors = with config.colorScheme.palette; {
+      colors = with config.lib.stylix.colors; {
         "fg" = "#${base05}";
         "bg" = "#${base00}";
         "hl" = "#${base08}";

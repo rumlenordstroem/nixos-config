@@ -46,7 +46,7 @@ in
             y = 0;
           };
         };
-        colors = with config.colorScheme.palette; {
+        colors = with config.lib.stylix.colors; {
           primary = {
             foreground = "0x${base05}";
             background = "0x${base00}";

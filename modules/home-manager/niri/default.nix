@@ -145,7 +145,7 @@ in
 
       layout = {
         gaps = 6;
-        border = with config.colorScheme.palette; {
+        border = with config.lib.stylix.colors; {
           enable = true;
           width = 2;
           active.color = "#${base07}";
@@ -161,7 +161,7 @@ in
 
         focus-ring.enable = false;
 
-        tab-indicator = with config.colorScheme.palette; {
+        tab-indicator = with config.lib.stylix.colors; {
           active.color = "#${base0E}";
           inactive.color = "#${base07}";
           urgent.color = "#${base08}";

@@ -49,7 +49,7 @@ in
         };
 
 
-        urgency_low = with config.colorScheme.palette; {
+        urgency_low = with config.lib.stylix.colors; {
           background = "#${base00}";
           foreground = "#${base05}";
           highlight = "#${base04}";
@@ -57,7 +57,7 @@ in
           timeout = 5;
         };
 
-        urgency_normal = with config.colorScheme.palette; {
+        urgency_normal = with config.lib.stylix.colors; {
           background = "#${base00}";
           foreground = "#${base05}";
           highlight = "#${base04}";
@@ -65,7 +65,7 @@ in
           timeout = 5;
         };
 
-        urgency_critical = with config.colorScheme.palette; {
+        urgency_critical = with config.lib.stylix.colors; {
           background = "#${base00}";
           foreground = "#${base05}";
           highlight = "#${base04}";
