@@ -32,7 +32,7 @@ in
           lines = 10;
         };
 
-        colors = with config.colorScheme.palette; {
+        colors = with config.lib.stylix.colors; {
           background = "${base00}ff";
           text = "${base05}ff";
           match = "${base08}ff";

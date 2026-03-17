@@ -48,7 +48,7 @@ in
 
       functions.fish_greeting = "";
 
-      interactiveShellInit = with config.colorScheme.palette; /*fish*/ ''
+      interactiveShellInit = with config.lib.stylix.colors; /*fish*/ ''
         # Delete word on control + backspace
         bind \b backward-kill-word
 

@@ -48,19 +48,19 @@ in
     #   enable = true;
     #   package = pkgs.papirus-icon-theme.overrideAttrs (oldAttrs: {
     #     patchPhase = /* sh */ ''
-    #       find . -type f -name "*.svg" -exec sed -i 's/#${if config.colorScheme.variant == "dark" then "dfdfdf" else "444444"}/#${config.colorScheme.palette.base05}/g' {} +
+    #       find . -type f -name "*.svg" -exec sed -i 's/#${if config.lib.stylix.colors.variant == "dark" then "dfdfdf" else "444444"}/#${config.lib.stylix.colors.base05}/g' {} +
     #     '';
     #     dontPatchELF = true;
     #     dontPatchShebangs = true;
     #     dontRewriteSymlinks = true;
     #   });
-    #   name = if config.colorScheme.variant == "dark" then "Papirus-Dark" else "Papirus-Light";
+    #   name = if config.lib.stylix.colors.variant == "dark" then "Papirus-Dark" else "Papirus-Light";
     # };
 
     # System cursor theme
     home.pointerCursor = {
       # package = pkgs.capitaine-cursors;
-      name = if config.colorScheme.variant == "dark" then "capitaine-cursors-white" else "capitaine-cursors";
+      name = if config.lib.stylix.colors.variant == "dark" then "capitaine-cursors-white" else "capitaine-cursors";
       size = 32;
       gtk.enable = true;
     };
@@ -88,7 +88,7 @@ in
       audio-volume-control = "${pkgs.audio-volume-control}/bin/audio-volume-control";
       mon-brightness-control = "${pkgs.mon-brightness-control}/bin/mon-brightness-control";
 
-      fallback = "${config.colorScheme.palette.base02}"; # Fallback color for wallpaper
+      fallback = "${config.lib.stylix.colors.base02}"; # Fallback color for wallpaper
 
       scrollCoolDown = 200;
 
@@ -147,7 +147,7 @@ in
 
       layout = {
         gaps = 6;
-        border = with config.colorScheme.palette; {
+        border = with config.lib.stylix.colors; {
           enable = true;
           width = 2;
           active.color = "#${base07}";
@@ -163,7 +163,7 @@ in
 
         focus-ring.enable = false;
 
-        tab-indicator = with config.colorScheme.palette; {
+        tab-indicator = with config.lib.stylix.colors; {
           active.color = "#${base0E}";
           inactive.color = "#${base07}";
           urgent.color = "#${base08}";

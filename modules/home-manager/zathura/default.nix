@@ -16,7 +16,7 @@ in
     programs.zathura = {
       enable = true;
 
-      options = with config.colorScheme.palette; {
+      options = with config.lib.stylix.colors; {
         # Settings
         selection-clipboard = "clipboard";
         recolor = true;

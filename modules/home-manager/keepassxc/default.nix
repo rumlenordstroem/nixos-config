@@ -25,7 +25,7 @@ in
           CustomBrowserLocation = "~/.librewolf/native-messaging-hosts/";
           UpdateBinaryPath = false; # Needed for browser plugin
         };
-        GUI.ApplicationTheme = config.colorScheme.variant;
+        GUI.ApplicationTheme = config.lib.stylix.colors.variant;
         Security.IconDownloadFallback = true;
         PasswordGenerator = {
           Length = 32;

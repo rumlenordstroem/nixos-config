@@ -19,7 +19,7 @@ in
 
       systemd.enable = true;
 
-      settings = with config.colorScheme.palette; let
+      settings = with config.lib.stylix.colors; let
         # The scale value is manually used since yambar does not support automatic DPI scaling
         # This function scales an integer by the monitor scaling. Returns result as a string which yambar accepts
         scaledInt = n: strings.toInt (head (strings.splitString "." (strings.floatToString ((head (filter (m: m.primary) config.nix-pille.monitors)).scale * n))));

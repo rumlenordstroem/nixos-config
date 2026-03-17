@@ -22,13 +22,13 @@ in
         daemonize = true;
         font = head config.fonts.fontconfig.defaultFonts.monospace;
         image = config.nix-pille.wayland.windowManager.sway.wallpaper; # TODO
-        color = "${config.colorScheme.palette.base02}"; # Fallback color
+        color = "${config.lib.stylix.colors.base02}"; # Fallback color
 
         # Ring
         indicator-radius = 60;
         indicator-thickness = 8;
 
-        # Colors (TODO maybe use nix-colors here?)
+        # Colors (TODO maybe use stylix here?)
         inside-color = "0000001c";
         ring-color = "0000003e";
         line-color = "00000000";

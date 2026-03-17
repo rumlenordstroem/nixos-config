@@ -1,11 +1,9 @@
 { inputs, config, lib, pkgs, ... }:
 {
-  imports = [
-    inputs.nix-colors.homeManagerModules.default
-  ];
-
   # Global color scheme. See https://github.com/tinted-theming/base16-schemes
-  colorScheme = inputs.nix-colors.colorSchemes.catppuccin-latte;
+  stylix.enable = true;
+  stylix.autoEnable = false;
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-frappe.yaml";
 
   # Enable XDG base directories management
   nix.settings.use-xdg-base-directories = true;

@@ -4,7 +4,7 @@
   userContent = ''''; # Empty for now
 
   # Chrome styling
-  userChrome = with config.colorScheme.palette; /* css */ ''
+  userChrome = with config.lib.stylix.colors; /* css */ ''
     * {
       font-family: monospace;
       font-size: 14;

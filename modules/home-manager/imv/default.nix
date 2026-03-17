@@ -17,7 +17,7 @@ in
       enable = true;
 
       settings = {
-        options = with config.colorScheme.palette; {
+        options = with config.lib.stylix.colors; {
           width = 640;
           height = 400;
           background = "${base00}";
