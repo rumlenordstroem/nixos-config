@@ -27,7 +27,7 @@ in
       iconTheme = { inherit (config.nix-pille.icons) name package; };
 
       gtk3 = {
-        extraConfig.gtk-application-prefer-dark-theme = if config.colorScheme.variant == "dark" then "true" else "false";
+        extraConfig.gtk-application-prefer-dark-theme = if config.lib.stylix.colors.variant == "dark" then "true" else "false";
       };
       gtk4.extraConfig = gtk3.extraConfig;
     };

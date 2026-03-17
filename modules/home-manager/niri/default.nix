@@ -49,19 +49,19 @@ in
       enable = true;
       package = pkgs.papirus-icon-theme.overrideAttrs (oldAttrs: {
         patchPhase = /* sh */ ''
-          find . -type f -name "*.svg" -exec sed -i 's/#${if config.colorScheme.variant == "dark" then "dfdfdf" else "444444"}/#${config.colorScheme.palette.base05}/g' {} +
+          find . -type f -name "*.svg" -exec sed -i 's/#${if config.lib.stylix.colors.variant == "dark" then "dfdfdf" else "444444"}/#${config.lib.stylix.colors.base05}/g' {} +
         '';
         dontPatchELF = true;
         dontPatchShebangs = true;
         dontRewriteSymlinks = true;
       });
-      name = if config.colorScheme.variant == "dark" then "Papirus-Dark" else "Papirus-Light";
+      name = if config.lib.stylix.colors.variant == "dark" then "Papirus-Dark" else "Papirus-Light";
     };
 
     # System cursor theme
     home.pointerCursor = {
       package = pkgs.capitaine-cursors;
-      name = if config.colorScheme.variant == "dark" then "capitaine-cursors-white" else "capitaine-cursors";
+      name = if config.lib.stylix.colors.variant == "dark" then "capitaine-cursors-white" else "capitaine-cursors";
       size = 32;
       gtk.enable = true;
     };
