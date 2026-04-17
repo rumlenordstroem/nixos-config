@@ -35,6 +35,7 @@ in
       file                      # File type analyzer
       tldr                      # Alternative to man pages
       fq                        # Binary file analyzer
+      devenv                    # Nix based devenvs
     ];
   };
 }
