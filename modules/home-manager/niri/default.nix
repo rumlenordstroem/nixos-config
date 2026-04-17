@@ -66,7 +66,7 @@ in
       gtk.enable = true;
     };
 
-    services.swww.enable = true;
+    services.awww.enable = true;
 
     # Niri config
     programs.niri.enable = true;
@@ -77,7 +77,7 @@ in
     let
       # Essentials
       lock = "${pkgs.systemd}/bin/loginctl lock-session";
-      swww = "${config.services.swww.package}/bin/swww";
+      awww = "${config.services.awww.package}/bin/awww";
       cut = "${pkgs.coreutils}/bin/cut";
       terminal = "${config.programs.alacritty.package}/bin/alacritty";
       launcher = "${config.programs.fuzzel.package}/bin/fuzzel";
@@ -188,7 +188,7 @@ in
       layer-rules = [
         {
           matches = [
-            { namespace = "^swww-daemon$"; }
+            { namespace = "^awww-daemon$"; }
           ];
           place-within-backdrop = true;
         }

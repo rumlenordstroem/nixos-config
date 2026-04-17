@@ -21,7 +21,7 @@ in
       timeBeforeSuspend = 10 * minutes;
 
       # Programs
-      swaylock = "${config.programs.swaylock.package}/bin/swaylock --image $(${config.services.swww.package}/bin/swww query | ${pkgs.coreutils}/bin/cut --delimiter ' ' --fields 9)";
+      swaylock = "${config.programs.swaylock.package}/bin/swaylock --image $(${config.services.awww.package}/bin/awww query | ${pkgs.coreutils}/bin/cut --delimiter ' ' --fields 9)";
       loginctl = "${pkgs.systemd}/bin/loginctl";
       lock = "${loginctl} lock-session";
       systemctl = "${pkgs.systemd}/bin/systemctl";
