@@ -18,11 +18,6 @@
   # CPU frequency scaling
   services.thermald.enable = true;
 
-  # Faster wakeups from suspend
-  systemd.sleep.settings.Sleep = {
-    MemorySleepMode = "s2idle";
-  };
-
   # Make fans as quite as possible
   # It is probably not a good idea to let the laptop run this hot. Use at your own risk
   services.mbpfan.settings.general = {
