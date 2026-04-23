@@ -62,4 +62,3 @@
   # Install version
   system.stateVersion = "24.11";
 }
-

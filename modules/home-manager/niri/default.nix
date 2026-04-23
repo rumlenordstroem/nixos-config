@@ -93,7 +93,6 @@ in
     in {
       input.keyboard = {
         xkb = {
-          layout = "us(mac),dk(mac),kr";
           options = "lv3:ralt_switch,grp:alt_caps_toggle";
         };
       };
