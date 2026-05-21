@@ -27,6 +27,7 @@ in
       fd.enable = true;         # Modern find
       htop.enable = true;       # System monitor
       ripgrep.enable = true;    # Modern grep
+      numbat.enable = true;     # Scientific calculator
     };
 
     home.packages = with pkgs; [
