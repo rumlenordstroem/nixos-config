@@ -1,15 +1,11 @@
 { inputs, config, lib, pkgs, ... }:
 {
   users.rumle.enable = true;
-  
-  nix-pille.wayland.windowManager.sway = {
-    enable = true;
-    wallpaper = "~/Pictures/Wallpapers/brut.PNG";
-    terminal = "${config.programs.alacritty.package}/bin/alacritty";
-  };
-  wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "dk";
+
+  programs.niri.settings.input.keyboard.xkb.layout = "dk";
 
   nix-pille.programs = {
+    niri.enable = true;       # Window manager
     alacritty.enable = true;  # Terminal emulator
     librewolf.enable = true;  # Web browser
     imv.enable = true;        # Image viewer
