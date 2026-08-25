@@ -18,6 +18,7 @@ in
 
     gtk = rec {
       enable = true;
+      colorScheme = config.lib.stylix.colors.variant;
 
       font = {
         name = head config.fonts.fontconfig.defaultFonts.sansSerif;
@@ -25,11 +26,6 @@ in
       };
 
       iconTheme = { inherit (config.nix-pille.icons) name package; };
-
-      gtk3 = {
-        extraConfig.gtk-application-prefer-dark-theme = if config.lib.stylix.colors.variant == "dark" then "true" else "false";
-      };
-      gtk4.extraConfig = gtk3.extraConfig;
     };
   };
 }

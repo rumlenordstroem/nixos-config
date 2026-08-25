@@ -2,7 +2,7 @@
 {
   users.rumle.enable = true;
 
-  programs.niri.settings.input.keyboard.xkb.layout = "dk";
+  wayland.windowManager.niri.settings.input.keyboard.xkb.layout = "dk";
 
   nix-pille.programs = {
     niri.enable = true;       # Window manager

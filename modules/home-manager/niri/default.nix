@@ -60,6 +60,7 @@ in
 
     # System cursor theme
     home.pointerCursor = {
+      enable = true;
       package = pkgs.capitaine-cursors;
       name = if config.lib.stylix.colors.variant == "dark" then "capitaine-cursors-white" else "capitaine-cursors";
       size = 32;
@@ -69,10 +70,8 @@ in
     services.awww.enable = true;
 
     # Niri config
-    programs.niri.enable = true;
-    programs.niri.settings =
-
-    with config.lib.niri.actions;
+    wayland.windowManager.niri.enable = true;
+    wayland.windowManager.niri.settings =
 
     let
       # Essentials
@@ -106,35 +105,19 @@ in
         accel-profile = "adaptive";
         accel-speed = 0.20;
         scroll-factor = 0.35;
-        tap = false;
-        dwt = false;
-        natural-scroll = true;
+        # tap = false;
+        # dwt = false;
+        natural-scroll = {};
         click-method = "clickfinger";
       };
-
-      outputs = builtins.listToAttrs(map(monitor: {
-        name = monitor.name;
-        value = {
-          mode = {
-            width = monitor.width;
-            height = monitor.height;
-            refresh = monitor.refreshRate;
-          };
-          scale = monitor.scale;
-          position = {
-            x = monitor.x;
-            y = monitor.y;
-          };
-        };
-      }) (config.nix-pille.monitors));
 
       # No client side decorations
       prefer-no-csd = true;
 
       # Cursor settings
       cursor = {
-        size = config.home.pointerCursor.size;
-        theme = config.home.pointerCursor.name;
+        xcursor-size = config.home.pointerCursor.size;
+        xcursor-theme = config.home.pointerCursor.name;
       };
 
       environment = {
@@ -145,10 +128,10 @@ in
       layout = {
         gaps = 6;
         border = with config.lib.stylix.colors; {
-          enable = true;
+          on = {};
           width = 2;
-          active.color = "#${base07}";
-          inactive.color = "#${base04}";
+          active-color = "#${base07}";
+          inactive-color = "#${base04}";
         };
 
         struts = {
@@ -158,44 +141,45 @@ in
           bottom = 0;
         };
 
-        focus-ring.enable = false;
+        focus-ring.off = {};
 
         tab-indicator = with config.lib.stylix.colors; {
-          active.color = "#${base0E}";
-          inactive.color = "#${base07}";
-          urgent.color = "#${base08}";
+          active-color = "#${base0E}";
+          inactive-color = "#${base07}";
+          urgent-color = "#${base08}";
           width = 2;
           gap = -2;
-          length.total-proportion = 1.0;
+          length._props.total-proportion = 1.0;
         };
 
         background-color = "transparent";
       };
 
-      window-rules = [
-        {
-          geometry-corner-radius = {
-            top-left = 8.0;
-            top-right = 8.0;
-            bottom-left = 8.0;
-            bottom-right = 8.0;
-          };
-          clip-to-geometry = true;
-        }
-      ];
+      _children = [
+        { window-rule._children = [
+          { geometry-corner-radius = 8; }
+          { clip-to-geometry = true; }
+        ];}
 
-      layer-rules = [
-        {
-          matches = [
-            { namespace = "^awww-daemon$"; }
-          ];
-          place-within-backdrop = true;
-        }
-      ];
+        { layer-rule._children = [
+          { match._props = { namespace = "^awww-daemon$"; }; }
+          { place-within-backdrop = true; }
+        ];}
+      ] ++ map(monitor: {
+        output = {
+          _args = [ monitor.name ];
+          mode = "${toString monitor.width}x${toString monitor.height}@${toString monitor.refreshRate}";
+          scale = monitor.scale;
+          position._props = {
+            x = monitor.x;
+            y = monitor.y;
+          };
+        };
+      }) (config.nix-pille.monitors);
 
       animations = {
         workspace-switch = {
-          kind.spring = {
+          spring._props = {
             damping-ratio = 1.0;
             stiffness = 500;
             epsilon = 0.0001;
@@ -203,10 +187,8 @@ in
         };
 
         window-open = {
-          kind.easing = {
-            duration-ms = 250;
-            curve = "ease-out-quad";
-          };
+          duration-ms = 250;
+          curve = "ease-out-quad";
           custom-shader = /* glsl */ ''
             vec4 crt_power_on(vec3 coords_geo, vec3 size_geo) {
                 float p = niri_clamped_progress;
@@ -236,10 +218,8 @@ in
         };
 
         window-close = {
-          kind.easing = {
-            duration-ms = 250;
-            curve = "ease-out-cubic";
-          };
+          duration-ms = 250;
+          curve = "ease-out-cubic";
           custom-shader = /* glsl */ ''
             vec4 crt_power_off(vec3 coords_geo, vec3 size_geo) {
                 float p = niri_clamped_progress;
@@ -270,167 +250,167 @@ in
       };
 
       binds = {
-        "Mod+O".action = toggle-overview;
-        "Mod+Q".action = close-window;
-        "Mod+Return".action.spawn = terminal;
-        "Mod+D".action.spawn = launcher;
-        "Mod+Shift+D".action.spawn-sh = finder;
-        "Mod+Shift+Slash".action = show-hotkey-overlay;
-        "Mod+Shift+E".action = quit;
-        "Mod+X".action.spawn-sh = lock;
+        "Mod+O".toggle-overview = {};
+        "Mod+Q".close-window = {};
+        "Mod+Return".spawn = [terminal];
+        "Mod+D".spawn = [launcher];
+        "Mod+Shift+D".spawn-sh = finder;
+        "Mod+Shift+Slash".show-hotkey-overlay = {};
+        "Mod+Shift+E".quit = {};
+        "Mod+X".spawn-sh = lock;
 
         # Focusing windows
-        "Mod+Left".action = focus-column-left;
-        "Mod+Down".action = focus-window-down;
-        "Mod+Up".action = focus-window-up;
-        "Mod+Right".action = focus-column-right;
-        "Mod+H".action = focus-column-left;
-        "Mod+J".action = focus-window-down;
-        "Mod+K".action = focus-window-up;
-        "Mod+L".action = focus-column-right;
-        "Mod+WheelScrollRight" = { action = focus-column-right; cooldown-ms = scrollCoolDown; };
-        "Mod+WheelScrollLeft" = { action = focus-column-left; cooldown-ms = scrollCoolDown; };
-        "Mod+TouchpadScrollRight" = { action = focus-column-right; cooldown-ms = scrollCoolDown; };
-        "Mod+TouchpadScrollLeft" = { action = focus-column-left; cooldown-ms = scrollCoolDown; };
+        "Mod+Left".focus-column-left = {};
+        "Mod+Down".focus-window-down = {};
+        "Mod+Up".focus-window-up = {};
+        "Mod+Right".focus-column-right = {};
+        "Mod+H".focus-column-left = {};
+        "Mod+J".focus-window-down = {};
+        "Mod+K".focus-window-up = {};
+        "Mod+L".focus-column-right = {};
+        "Mod+WheelScrollRight" = { focus-column-right = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+WheelScrollLeft" = { focus-column-left = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+TouchpadScrollRight" = { focus-column-right = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+TouchpadScrollLeft" = { focus-column-left = {}; _props.cooldown-ms = scrollCoolDown; };
 
         # Moving windows
-        "Mod+Shift+Left".action = move-column-left;
-        "Mod+Shift+Down".action = move-window-down;
-        "Mod+Shift+Up".action =  move-window-up;
-        "Mod+Shift+Right".action = move-column-right;
-        "Mod+Shift+H".action = move-column-left;
-        "Mod+Shift+J".action = move-window-down;
-        "Mod+Shift+K".action = move-window-up;
-        "Mod+Shift+L".action = move-column-right;
-        "Mod+Shift+WheelScrollRight" = { action = move-column-right; cooldown-ms = scrollCoolDown; };
-        "Mod+Shift+WheelScrollLeft" = { action = move-column-left; cooldown-ms = scrollCoolDown; };
-        "Mod+Shift+TouchpadScrollRight" = { action = move-column-right; cooldown-ms = scrollCoolDown; };
-        "Mod+Shift+TouchpadScrollLeft" = { action = move-column-left; cooldown-ms = scrollCoolDown; };
+        "Mod+Shift+Left".move-column-left = {};
+        "Mod+Shift+Down".move-window-down = {};
+        "Mod+Shift+Up". move-window-up = {};
+        "Mod+Shift+Right".move-column-right = {};
+        "Mod+Shift+H".move-column-left = {};
+        "Mod+Shift+J".move-window-down = {};
+        "Mod+Shift+K".move-window-up = {};
+        "Mod+Shift+L".move-column-right = {};
+        "Mod+Shift+WheelScrollRight" = { move-column-right = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+Shift+WheelScrollLeft" = { move-column-left = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+Shift+TouchpadScrollRight" = { move-column-right = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+Shift+TouchpadScrollLeft" = { move-column-left = {}; _props.cooldown-ms = scrollCoolDown; };
 
         # Moving windows to extremeties
-        "Mod+Home".action = focus-column-first;
-        "Mod+End".action = focus-column-last;
-        "Mod+Shift+Home".action = move-column-to-first;
-        "Mod+Shift+End".action = move-column-to-last;
+        "Mod+Home".focus-column-first = {};
+        "Mod+End".focus-column-last = {};
+        "Mod+Shift+Home".move-column-to-first = {};
+        "Mod+Shift+End".move-column-to-last = {};
 
         # Focusing monitors
-        "Mod+Ctrl+Left".action = focus-monitor-left;
-        "Mod+Ctrl+Down".action = focus-monitor-down;
-        "Mod+Ctrl+Up".action = focus-monitor-up;
-        "Mod+Ctrl+Right".action = focus-monitor-right;
-        "Mod+Ctrl+H".action = focus-monitor-left;
-        "Mod+Ctrl+J".action = focus-monitor-down;
-        "Mod+Ctrl+K".action = focus-monitor-up;
-        "Mod+Ctrl+L".action = focus-monitor-right;
+        "Mod+Ctrl+Left".focus-monitor-left = {};
+        "Mod+Ctrl+Down".focus-monitor-down = {};
+        "Mod+Ctrl+Up".focus-monitor-up = {};
+        "Mod+Ctrl+Right".focus-monitor-right = {};
+        "Mod+Ctrl+H".focus-monitor-left = {};
+        "Mod+Ctrl+J".focus-monitor-down = {};
+        "Mod+Ctrl+K".focus-monitor-up = {};
+        "Mod+Ctrl+L".focus-monitor-right = {};
 
         # Moving windows to monitor
-        "Mod+Shift+Ctrl+Left".action = move-column-to-monitor-left;
-        "Mod+Shift+Ctrl+Down".action = move-column-to-monitor-down;
-        "Mod+Shift+Ctrl+Up".action = move-column-to-monitor-up;
-        "Mod+Shift+Ctrl+Right".action = move-column-to-monitor-right;
-        "Mod+Shift+Ctrl+H".action = move-column-to-monitor-left;
-        "Mod+Shift+Ctrl+J".action = move-column-to-monitor-down;
-        "Mod+Shift+Ctrl+K".action = move-column-to-monitor-up;
-        "Mod+Shift+Ctrl+L".action = move-column-to-monitor-right;
+        "Mod+Shift+Ctrl+Left".move-column-to-monitor-left = {};
+        "Mod+Shift+Ctrl+Down".move-column-to-monitor-down = {};
+        "Mod+Shift+Ctrl+Up".move-column-to-monitor-up = {};
+        "Mod+Shift+Ctrl+Right".move-column-to-monitor-right = {};
+        "Mod+Shift+Ctrl+H".move-column-to-monitor-left = {};
+        "Mod+Shift+Ctrl+J".move-column-to-monitor-down = {};
+        "Mod+Shift+Ctrl+K".move-column-to-monitor-up = {};
+        "Mod+Shift+Ctrl+L".move-column-to-monitor-right = {};
 
         # Focusing workspaces
-        "Mod+1".action.focus-workspace = 1;
-        "Mod+2".action.focus-workspace = 2;
-        "Mod+3".action.focus-workspace = 3;
-        "Mod+4".action.focus-workspace = 4;
-        "Mod+5".action.focus-workspace = 5;
-        "Mod+6".action.focus-workspace = 6;
-        "Mod+7".action.focus-workspace = 7;
-        "Mod+8".action.focus-workspace = 8;
-        "Mod+9".action.focus-workspace = 9;
-        "Mod+Page_Down".action = focus-workspace-down;
-        "Mod+Page_Up".action = focus-workspace-up;
-        "Mod+U".action = focus-workspace-down;
-        "Mod+I".action = focus-workspace-up;
-        "Mod+WheelScrollDown" = { action = focus-workspace-down; cooldown-ms = scrollCoolDown; };
-        "Mod+WheelScrollUp" = { action = focus-workspace-up; cooldown-ms = scrollCoolDown; };
-        "Mod+TouchpadScrollDown" = { action = focus-workspace-down; cooldown-ms = scrollCoolDown; };
-        "Mod+TouchpadScrollUp" = { action = focus-workspace-up; cooldown-ms = scrollCoolDown; };
+        "Mod+1".focus-workspace = 1;
+        "Mod+2".focus-workspace = 2;
+        "Mod+3".focus-workspace = 3;
+        "Mod+4".focus-workspace = 4;
+        "Mod+5".focus-workspace = 5;
+        "Mod+6".focus-workspace = 6;
+        "Mod+7".focus-workspace = 7;
+        "Mod+8".focus-workspace = 8;
+        "Mod+9".focus-workspace = 9;
+        "Mod+Page_Down".focus-workspace-down = {};
+        "Mod+Page_Up".focus-workspace-up = {};
+        "Mod+U".focus-workspace-down = {};
+        "Mod+I".focus-workspace-up = {};
+        "Mod+WheelScrollDown" = { focus-workspace-down = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+WheelScrollUp" = { focus-workspace-up = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+TouchpadScrollDown" = { focus-workspace-down = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+TouchpadScrollUp" = { focus-workspace-up = {}; _props.cooldown-ms = scrollCoolDown; };
 
         # Moving windows to workspaces
-        "Mod+Shift+1".action.move-column-to-workspace = 1;
-        "Mod+Shift+2".action.move-column-to-workspace = 2;
-        "Mod+Shift+3".action.move-column-to-workspace = 3;
-        "Mod+Shift+4".action.move-column-to-workspace = 4;
-        "Mod+Shift+5".action.move-column-to-workspace = 5;
-        "Mod+Shift+6".action.move-column-to-workspace = 6;
-        "Mod+Shift+7".action.move-column-to-workspace = 7;
-        "Mod+Shift+8".action.move-column-to-workspace = 8;
-        "Mod+Shift+9".action.move-column-to-workspace = 9;
-        "Mod+Shift+Page_Down".action = move-column-to-workspace-down;
-        "Mod+Shift+Page_Up".action = move-column-to-workspace-up;
-        "Mod+Shift+U".action = move-column-to-workspace-down;
-        "Mod+Shift+I".action = move-column-to-workspace-up;
-        "Mod+Shift+WheelScrollDown" = { action = move-column-to-workspace-down; cooldown-ms = scrollCoolDown; };
-        "Mod+Shift+WheelScrollUp" = { action = move-column-to-workspace-up; cooldown-ms = scrollCoolDown; };
-        "Mod+Shift+TouchpadScrollDown" = { action = move-column-to-workspace-down; cooldown-ms = scrollCoolDown; };
-        "Mod+Shift+TouchpadScrollUp" = { action = move-column-to-workspace-up; cooldown-ms = scrollCoolDown; };
-        "Mod+Tab".action = focus-workspace-previous;
+        "Mod+Shift+1".move-column-to-workspace = 1;
+        "Mod+Shift+2".move-column-to-workspace = 2;
+        "Mod+Shift+3".move-column-to-workspace = 3;
+        "Mod+Shift+4".move-column-to-workspace = 4;
+        "Mod+Shift+5".move-column-to-workspace = 5;
+        "Mod+Shift+6".move-column-to-workspace = 6;
+        "Mod+Shift+7".move-column-to-workspace = 7;
+        "Mod+Shift+8".move-column-to-workspace = 8;
+        "Mod+Shift+9".move-column-to-workspace = 9;
+        "Mod+Shift+Page_Down".move-column-to-workspace-down = {};
+        "Mod+Shift+Page_Up".move-column-to-workspace-up = {};
+        "Mod+Shift+U".move-column-to-workspace-down = {};
+        "Mod+Shift+I".move-column-to-workspace-up = {};
+        "Mod+Shift+WheelScrollDown" = { move-column-to-workspace-down = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+Shift+WheelScrollUp" = { move-column-to-workspace-up = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+Shift+TouchpadScrollDown" = { move-column-to-workspace-down = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+Shift+TouchpadScrollUp" = { move-column-to-workspace-up = {}; _props.cooldown-ms = scrollCoolDown; };
+        "Mod+Tab".focus-workspace-previous = {};
 
-        # Column bindings
-        "Mod+BracketLeft".action = consume-or-expel-window-left;
-        "Mod+BracketRight".action = consume-or-expel-window-right;
-        "Mod+Comma".action = consume-window-into-column;
-        "Mod+Period".action = expel-window-from-column;
+      # Column bindings
+        "Mod+BracketLeft".consume-or-expel-window-left = {};
+        "Mod+BracketRight".consume-or-expel-window-right = {};
+        "Mod+Comma".consume-window-into-column = {};
+        "Mod+Period".expel-window-from-column = {};
 
-        "Mod+R".action = switch-preset-column-width;
-        "Mod+Shift+R".action = switch-preset-window-height;
-        "Mod+Ctrl+R".action = reset-window-height;
-        "Mod+F".action = maximize-column;
-        "Mod+Shift+F".action = fullscreen-window;
+        "Mod+R".switch-preset-column-width = {};
+        "Mod+Shift+R".switch-preset-window-height = {};
+        "Mod+Ctrl+R".reset-window-height = {};
+        "Mod+F".maximize-column = {};
+        "Mod+Shift+F".fullscreen-window = {};
 
-        "Mod+Ctrl+F".action = expand-column-to-available-width;
+        "Mod+Ctrl+F".expand-column-to-available-width = {};
 
-        "Mod+C".action = center-column;
+        "Mod+C".center-column = {};
 
-        "Mod+Shift+C".action = center-visible-columns;
+        "Mod+Shift+C".center-visible-columns = {};
 
-        "Mod+Minus".action = set-column-width "-10%";
-        "Mod+Equal".action = set-column-width "+10%";
+        "Mod+Minus".set-column-width = "-10%";
+        "Mod+Equal".set-column-width = "+10%";
 
-        "Mod+Shift+Minus".action = set-window-height "-10%";
-        "Mod+Shift+Equal".action = set-window-height "+10%";
+        "Mod+Shift+Minus".set-window-height = "-10%";
+        "Mod+Shift+Equal".set-window-height = "+10%";
 
-        "Mod+V".action = toggle-window-floating;
-        "Mod+Shift+V".action = switch-focus-between-floating-and-tiling;
+        "Mod+V".toggle-window-floating = {};
+        "Mod+Shift+V".switch-focus-between-floating-and-tiling = {};
 
-        "Mod+W".action = toggle-column-tabbed-display;
+        "Mod+W".toggle-column-tabbed-display = {};
 
         # Brightness control
-        "XF86MonBrightnessDown" = { action.spawn = [ mon-brightness-control "decrease" ]; allow-when-locked = true; };
-        "XF86MonBrightnessUp" = { action.spawn = [ mon-brightness-control "increase" ]; allow-when-locked = true; };
+        "XF86MonBrightnessDown" = { spawn = [ mon-brightness-control "decrease" ]; _props.allow-when-locked = true; };
+        "XF86MonBrightnessUp" = { spawn = [ mon-brightness-control "increase" ]; _props.allow-when-locked = true; };
 
         # Keyboard backlight control
-        "XF86KbdBrightnessDown" = { action.spawn = [ kbd-brightness-control "decrease" ]; allow-when-locked = true; };
-        "XF86KbdBrightnessUp" = { action.spawn = [ kbd-brightness-control "increase" ]; allow-when-locked = true; };
+        "XF86KbdBrightnessDown" = { spawn = [ kbd-brightness-control "decrease" ]; _props.allow-when-locked = true; };
+        "XF86KbdBrightnessUp" = { spawn = [ kbd-brightness-control "increase" ]; _props.allow-when-locked = true; };
 
         # Volume control
-        "XF86AudioMute" = { action.spawn = [ audio-volume-control "toggle" ]; allow-when-locked = true; };
-        "XF86AudioLowerVolume" = { action.spawn = [ audio-volume-control "decrease" ]; allow-when-locked = true; };
-        "XF86AudioRaiseVolume" = { action.spawn = [ audio-volume-control "increase" ]; allow-when-locked = true; };
+        "XF86AudioMute" = { spawn = [ audio-volume-control "toggle" ]; _props.allow-when-locked = true; };
+        "XF86AudioLowerVolume" = { spawn = [ audio-volume-control "decrease" ]; _props.allow-when-locked = true; };
+        "XF86AudioRaiseVolume" = { spawn = [ audio-volume-control "increase" ]; _props.allow-when-locked = true; };
 
         # Media control
-        "XF86AudioPlay" = { action.spawn =  [ playerctl "--player" "playerctld" "play-pause" ]; allow-when-locked = true; };
-        "XF86AudioNext" = { action.spawn =  [ playerctl "--player" "playerctld" "next" ]; allow-when-locked = true; };
-        "XF86AudioPrev" = { action.spawn =  [ playerctl "--player" "playerctld" "previous" ]; allow-when-locked = true; };
+        "XF86AudioPlay" = { spawn =  [ playerctl "--player" "playerctld" "play-pause" ]; _props.allow-when-locked = true; };
+        "XF86AudioNext" = { spawn =  [ playerctl "--player" "playerctld" "next" ]; _props.allow-when-locked = true; };
+        "XF86AudioPrev" = { spawn =  [ playerctl "--player" "playerctld" "previous" ]; _props.allow-when-locked = true; };
 
         # Screenshot
-        "Mod+P".action.screenshot = [ ];
-        "Mod+Shift+XF86LaunchA".action.spawn-sh = "${grimshot} save output";
-        "Mod+Ctrl+Shift+XF86LaunchA".action.spawn-sh = "${grimshot} copy output";
+        "Mod+P".screenshot = [ ];
+        "Mod+Shift+XF86LaunchA".spawn-sh = "${grimshot} save output";
+        "Mod+Ctrl+Shift+XF86LaunchA".spawn-sh = "${grimshot} copy output";
 
         # Screenshot selected area
-        "Mod+Shift+XF86LaunchB".action.spawn-sh = "${grimshot} save area";
-        "Mod+Ctrl+Shift+XF86LaunchB".action.spawn-sh = "${grimshot} copy area";
+        "Mod+Shift+XF86LaunchB".spawn-sh = "${grimshot} save area";
+        "Mod+Ctrl+Shift+XF86LaunchB".spawn-sh = "${grimshot} copy area";
 
         # Screenshot specific window
-        "Mod+Shift+XF86KbdBrightnessDown".action.spawn-sh = "${grimshot} save window";
-        "Mod+Ctrl+Shift+XF86KbdBrightnessDown".action.spawn-sh = "${grimshot} copy window";
+        "Mod+Shift+XF86KbdBrightnessDown".spawn-sh = "${grimshot} save window";
+        "Mod+Ctrl+Shift+XF86KbdBrightnessDown".spawn-sh = "${grimshot} copy window";
       };
     };
   };

@@ -29,15 +29,19 @@ in
         "--info=hidden"
       ];
 
-      fileWidgetCommand = "${pkgs.fd}/bin/fd --type file --follow";
-      fileWidgetOptions = [
-        " --preview '${pkgs.bat}/bin/bat -n --color=always {}'"
-      ];
+      fileWidget = {
+        command = "${pkgs.fd}/bin/fd --type file --follow";
+        options = [
+          " --preview '${pkgs.bat}/bin/bat -n --color=always {}'"
+        ];
+      };
 
-      changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type directory --follow";
-      changeDirWidgetOptions = [
-        "--preview '${config.programs.eza.package}/bin/eza --tree --color=always --icons=always {}'"
-      ];
+      changeDirWidget = {
+        command = "${pkgs.fd}/bin/fd --type directory --follow";
+        options = [
+          "--preview '${config.programs.eza.package}/bin/eza --tree --color=always --icons=always {}'"
+        ];
+      };
 
       colors = with config.lib.stylix.colors; {
         "fg" = "#${base05}";
