@@ -105,8 +105,6 @@ in
         accel-profile = "adaptive";
         accel-speed = 0.20;
         scroll-factor = 0.35;
-        # tap = false;
-        # dwt = false;
         natural-scroll = {};
         click-method = "clickfinger";
       };
@@ -124,6 +122,8 @@ in
         NIXOS_OZONE_WL = "1";
         ELECTRON_OZONE_PLATFORM_HINT = "auto";
       };
+
+      screenshot-path = "~/Pictures/screenshots/%Y-%m-%d_%H-%M-%S.png";
 
       layout = {
         gaps = 6;
@@ -153,6 +153,8 @@ in
         };
 
         background-color = "transparent";
+
+        empty-workspace-above-first = {};
       };
 
       _children = [
@@ -252,12 +254,24 @@ in
       binds = {
         "Mod+O".toggle-overview = {};
         "Mod+Q".close-window = {};
-        "Mod+Return".spawn = [terminal];
-        "Mod+D".spawn = [launcher];
-        "Mod+Shift+D".spawn-sh = finder;
+        "Mod+Return" = {
+          _props.hotkey-overlay-title = "Open terminal";
+          spawn = [terminal];
+        };
+        "Mod+D" = {
+          _props.hotkey-overlay-title = "Open launcher";
+          spawn = [launcher];
+        };
+        "Mod+Shift+D" = {
+          _props.hotkey-overlay-title = "Open file picker";
+          spawn-sh = finder;
+        };
         "Mod+Shift+Slash".show-hotkey-overlay = {};
         "Mod+Shift+E".quit = {};
-        "Mod+X".spawn-sh = lock;
+        "Mod+X" = {
+          _props.hotkey-overlay-title = "Lock session";
+          spawn-sh = lock;
+        };
 
         # Focusing windows
         "Mod+Left".focus-column-left = {};
@@ -401,16 +415,7 @@ in
 
         # Screenshot
         "Mod+P".screenshot = [ ];
-        "Mod+Shift+XF86LaunchA".spawn-sh = "${grimshot} save output";
-        "Mod+Ctrl+Shift+XF86LaunchA".spawn-sh = "${grimshot} copy output";
-
-        # Screenshot selected area
-        "Mod+Shift+XF86LaunchB".spawn-sh = "${grimshot} save area";
-        "Mod+Ctrl+Shift+XF86LaunchB".spawn-sh = "${grimshot} copy area";
-
-        # Screenshot specific window
-        "Mod+Shift+XF86KbdBrightnessDown".spawn-sh = "${grimshot} save window";
-        "Mod+Ctrl+Shift+XF86KbdBrightnessDown".spawn-sh = "${grimshot} copy window";
+        "Mod+Shift+P".screenshot-screen = [ ];
       };
     };
   };
